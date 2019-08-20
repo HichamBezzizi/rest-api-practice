@@ -1,44 +1,29 @@
-//import package
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-require('dotenv/config');
-//execute package
 const app = express();
-//specify port
-const port = 3000;
+require('dotenv/config');
 
 
-//middlewares
-//parses the data
-app.use(bodyParser.json());
 app.use(cors());
-
-// app.use(express.urlencoded({
-//     extended: true
-// }));
-// app.use(express.json());
+app.use(bodyParser.json());
 
 //import routes
 const postsRoute = require('./routes/posts');
 app.use('/posts', postsRoute);
 
-
-//routes
+//Routes
 app.get('/', (req, res) => {
-    res.send('Home');
+    res.send('HOME');
 });
 
-
-
-//database connection
+//DB Connection
 mongoose.connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true
-}, () => console.log('DB connection made...'));
+}, () => {
+    console.log("DB connection made!");
+});
 
-
-
-
-//listening to port
-app.listen(port);
+// listening to port
+app.listen(4000);

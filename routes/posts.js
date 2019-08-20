@@ -2,84 +2,79 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 
-//Gets all posts
+
+// Get all posts
 router.get('/', async (req, res) => {
     try {
-
         const posts = await Post.find();
         res.json(posts);
-
-    } catch (error) {
+    } catch (err) {
         res.json({
-            message: error
+            err
         });
-    }
+    };
 });
 
-//Submits a post
+// Submit a post
 router.post('/', async (req, res) => {
     const post = new Post({
-
         title: req.body.title,
         description: req.body.description
-
     });
     try {
         const savedPost = await post.save();
         res.json(savedPost);
-    } catch (error) {
+    } catch (err) {
         res.json({
-            message: error
+            message: err
         });
     };
-
 });
 
-//specific post
+// Get 1 post
 router.get('/:postId', async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId);
         res.json(post);
-
-    } catch (error) {
+    } catch (err) {
         res.json({
-            message: error
+            message: err
         });
-    }
+    };
 });
-//delete a specific post
+
+// Delete a post
 router.delete('/:postId', async (req, res) => {
     try {
-        const removedPost = await Post.remove({
+        const removePost = await Post.remove({
             _id: req.params.postId
         });
-        res.json(removedPost);
+        res.json(removePost);
 
-    } catch (error) {
+    } catch (err) {
         res.json({
-            message: error
+            message: err
         });
-    }
+    };
 });
 
-//Update post
-router.patch('/:postId', async (req, res) => {
+// Update a post
+router.put('/:postId', async (req, res) => {
     try {
         const updatePost = await Post.updateOne({
             _id: req.params.postId
         }, {
             $set: {
-                title: req.body.title
+                title: req.body.title,
+                description: req.body.description
             }
         });
         res.json(updatePost);
-
-    } catch (error) {
+    } catch (err) {
         res.json({
-            message: error
-        })
-    }
+            message: err
+        });
+    };
 });
-
 
 module.exports = router;
